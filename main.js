@@ -32,6 +32,7 @@ function main(){
     camera.lookAt(new THREE.Vector3(0, 0, -5))
 
     const renderer = new THREE.WebGLRenderer()
+    renderer.shadowMap.enabled = true
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setClearColor("rgb(60, 60, 60)")
 
@@ -47,6 +48,7 @@ function generateFloor(w, d){
         side: THREE.DoubleSide,
     })
     const mesh = new THREE.Mesh(geometry, material)
+    mesh.receiveShadow = true
     return mesh
 }
 
@@ -56,11 +58,14 @@ function generateBox(w, h, d){
         color: "rgb(20, 20, 20)",
     })
     const mesh = new THREE.Mesh(geometry, material)
+    mesh.castShadow = true
     return mesh
 }
 
 function genaretePointLight(color, intensity){
-    return new THREE.PointLight(color, intensity)
+    const ligtht = new THREE.PointLight(color, intensity)
+    ligtht.castShadow = true
+    return ligtht
 }
 
 function update(renderer, scene, camera){
