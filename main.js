@@ -17,6 +17,7 @@ function main(){
 
     scene.add(floor)
     scene.add(pointLight)
+    loadScene(scene)
 
     
 
@@ -39,6 +40,20 @@ function main(){
     document.querySelector(".webgl").appendChild(renderer.domElement)
     update(renderer, scene, camera)
     return scene
+}
+
+function loadScene(scene){
+    const loader = new THREE.ObjectLoader()
+    loader.load("scenes/scene.json", function(obj){
+        scene.add(obj)
+    },
+    function (x){
+        console.log(x.loaded / x.total * 100 + "% loaded")
+    },
+    function (err){
+        console.log(err)
+    })
+    // return scene
 }
 
 function generateFloor(w, d){

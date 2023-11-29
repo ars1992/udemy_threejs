@@ -1,0 +1,138 @@
+{
+	"metadata": {
+		"version": 4.6,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"geometries": [
+		{
+			"uuid": "41c2ed6d-17b4-4bdb-a3ee-b38476e58fe4",
+			"type": "BoxGeometry",
+			"width": 4,
+			"height": 1.5,
+			"depth": 0.3,
+			"widthSegments": 1,
+			"heightSegments": 1,
+			"depthSegments": 1
+		},
+		{
+			"uuid": "c09d2895-70ef-40ad-9e39-5bf7502d13f2",
+			"type": "PlaneGeometry",
+			"width": 10,
+			"height": 10,
+			"widthSegments": 1,
+			"heightSegments": 1
+		}],
+	"materials": [
+		{
+			"uuid": "bc09b6df-c4a5-441a-9fb8-20d524bf485d",
+			"type": "MeshToonMaterial",
+			"color": 16777215,
+			"emissive": 14995150,
+			"blendColor": 0
+		},
+		{
+			"uuid": "d13af04c-d2c7-441f-aa4c-05263cfa1027",
+			"type": "MeshToonMaterial",
+			"color": 4863542,
+			"emissive": 5845297,
+			"side": 2,
+			"blendColor": 0
+		}],
+	"object": {
+		"uuid": "b1b2564d-00a2-45c8-953a-22cea57c1d55",
+		"type": "Scene",
+		"name": "Scene",
+		"layers": 1,
+		"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+		"up": [0,1,0],
+		"background": 16119285,
+		"children": [
+			{
+				"uuid": "7dd9589d-6dd0-4350-b771-bc569777f3ca",
+				"type": "Mesh",
+				"name": "Box",
+				"castShadow": true,
+				"frustumCulled": false,
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0.038514687509036194,1.475585785125765,-1.0992491602288847,1],
+				"up": [0,1,0],
+				"geometry": "41c2ed6d-17b4-4bdb-a3ee-b38476e58fe4",
+				"material": "bc09b6df-c4a5-441a-9fb8-20d524bf485d"
+			},
+			{
+				"uuid": "6859e8d4-d45b-4bda-8b8f-b6c85276c33b",
+				"type": "AmbientLight",
+				"name": "AmbientLight",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0.06173426813248284,-135.313615196853,-424.31919980214184,1],
+				"up": [0,1,0],
+				"color": 2236962,
+				"intensity": 1
+			},
+			{
+				"uuid": "aad9cb21-8ebc-4fd6-9d7c-7898ccd2b828",
+				"type": "Mesh",
+				"name": "Plane",
+				"receiveShadow": true,
+				"layers": 1,
+				"matrix": [1,0,0,0,0,-2.220446049250313e-16,-1,0,0,1,-2.220446049250313e-16,0,-0.12726382850151663,0.28,0,1],
+				"up": [0,1,0],
+				"geometry": "c09d2895-70ef-40ad-9e39-5bf7502d13f2",
+				"material": "d13af04c-d2c7-441f-aa4c-05263cfa1027"
+			},
+			{
+				"uuid": "dff1970a-4fee-42cf-94e7-392fbc4474be",
+				"type": "PointLight",
+				"name": "PointLight",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,1.0963318265909556,4.934605484347833,1.8878198018731618,1],
+				"up": [0,1,0],
+				"color": 16777215,
+				"intensity": 1,
+				"distance": 0,
+				"decay": 2,
+				"shadow": {
+					"camera": {
+						"uuid": "d0fc91f9-4666-4c64-bbea-1b80449d1546",
+						"type": "PerspectiveCamera",
+						"layers": 1,
+						"up": [0,1,0],
+						"fov": 90,
+						"zoom": 1,
+						"near": 0.5,
+						"far": 500,
+						"focus": 10,
+						"aspect": 1,
+						"filmGauge": 35,
+						"filmOffset": 0
+					}
+				}
+			},
+			{
+				"uuid": "802ecfc8-5583-473e-916e-50ffb7c6099a",
+				"type": "DirectionalLight",
+				"name": "DirectionalLight",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,5,10.084770850965597,5.9727373094276555,1],
+				"up": [0,1,0],
+				"color": 16777215,
+				"intensity": 1,
+				"shadow": {
+					"camera": {
+						"uuid": "1fd3b983-934d-4635-a7aa-7cc283ff6b36",
+						"type": "OrthographicCamera",
+						"layers": 1,
+						"up": [0,1,0],
+						"zoom": 1,
+						"left": -5,
+						"right": 5,
+						"top": 5,
+						"bottom": -5,
+						"near": 0.5,
+						"far": 500
+					}
+				}
+			}]
+	}
+}
