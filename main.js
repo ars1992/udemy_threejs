@@ -3,12 +3,14 @@
 function main(){
     const scene = new THREE.Scene()
     const box = generateBox(1, 1, 1)
-    box.translateZ(-5)
-    box.position.y = box.geometry.parameters.height / 2
+    box.name = "box"
+    box.position.y = box.geometry.parameters.height / 2 
 
     const floor = generateFloor(10, 20)
+    floor.name = "floor"
     floor.rotation.x = Math.PI / 2
-    scene.add(box)
+
+    floor.add(box)
     scene.add(floor)
 
     const camera = new THREE.PerspectiveCamera(
@@ -51,6 +53,15 @@ function generateBox(w, h, d){
 
 function update(renderer, scene, camera){
     renderer.render(scene, camera)
+
+    const floor = scene.getObjectByName("floor")
+    floor.rotation.x += 0.002
+
+    scene.traverse(function(child){
+        const box = child.getObjectByName("box")
+        box.rotation.y -= 0.002
+    })
+
     requestAnimationFrame(function() {
         update(renderer, scene, camera)
     })
