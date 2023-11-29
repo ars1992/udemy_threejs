@@ -26,8 +26,8 @@ function main(){
     renderer.setSize(window.innerWidth, window.innerHeight)
 
     document.querySelector(".webgl").appendChild(renderer.domElement)
-    renderer.render(scene, camera)
-    
+    update(renderer, scene, camera)
+    return scene
 }
 
 function generateFloor(w, d){
@@ -49,4 +49,12 @@ function generateBox(w, h, d){
     return mesh
 }
 
-main()
+function update(renderer, scene, camera){
+    renderer.render(scene, camera)
+    requestAnimationFrame(function() {
+        update(renderer, scene, camera)
+    })
+}
+
+const scene = main();
+console.log(scene)
