@@ -1,6 +1,7 @@
 "use strict";
 
 const keyboard	= new THREEx.KeyboardState()
+const clock = new THREE.Clock()
 
 function main(){
     const scene = new THREE.Scene()
@@ -104,18 +105,20 @@ function update(renderer, scene, camera, controls){
 
     controls.update()
 
+    const speed = 10
+    const step = speed * clock.getDelta()
     const box = scene.getObjectByName("box")
     if(keyboard.pressed("D")){
-        box.translateX(0.2)
+        box.translateX(step)
     }
     if(keyboard.pressed("A")){
-        box.translateX(-0.2)
+        box.translateX(-step)
     }
     if(keyboard.pressed("W")){
-        box.translateY(0.2)
+        box.translateY(step)
     }
     if(keyboard.pressed("S")){
-        box.translateY(-0.2)
+        box.translateY(-step)
     }
 
     requestAnimationFrame(function() {
