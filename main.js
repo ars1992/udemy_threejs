@@ -1,16 +1,20 @@
 "use strict";
 
-const keyboard	= new THREEx.KeyboardState()
+const keyboard = new THREEx.KeyboardState()
 const clock = new THREE.Clock()
 
-function main(){
+function main() {
     const scene = new THREE.Scene()
 
     const gui = new dat.GUI()
 
     const box = generateBox(1, 1, 1)
     box.name = "box"
-    box.position.y = box.geometry.parameters.height / 2 
+    box.position.y = box.geometry.parameters.height / 2
+
+    const sphere = generateSphere(2, 42, 42, "img/texture-abstract.jpg")
+    sphere.name = "sphere"
+    sphere.position.set(1, 1, 1)
 
     const floor = generateFloor(10, 20)
     floor.name = "floor"
@@ -21,9 +25,15 @@ function main(){
     pointLight.name = "pointLight"
     pointLight.position.y = 5
 
+    const ambientLight = genareteAmbientLight("rgb(222, 0, 0)", 4)
+    ambientLight.name = "ambientLight"
+    sphere.add(ambientLight)
+
     gui.add(pointLight, "intensity", 0, 20)
+    gui.add(ambientLight, "intensity", 0, 20)
 
     scene.add(floor)
+    scene.add(sphere)
     scene.add(pointLight)
     // loadScene(scene)
 
@@ -51,21 +61,22 @@ function main(){
     return scene
 }
 
-function loadScene(scene){
+function loadScene(scene) {
     const loader = new THREE.ObjectLoader()
-    loader.load("scenes/scene.json", function(obj){
+    loader.load("scenes/scene.json", function (obj) {
         scene.add(obj)
     },
-    function (x){
-        console.log(x.loaded / x.total * 100 + "% loaded")
-    },
-    function (err){
-        console.log(err)
-    })
+        function (x) {
+            console.log(x.loaded / x.total * 100 + "% loaded scene")
+        },
+        function (err) {
+            console.log(err)
+        }
+    )
     // return scene
 }
 
-function generateFloor(w, d){
+function generateFloor(w, d) {
     const geometry = new THREE.PlaneGeometry(w, d)
     const material = new THREE.MeshPhongMaterial({
         color: "rgb(100, 100, 100)",
@@ -76,7 +87,7 @@ function generateFloor(w, d){
     return mesh
 }
 
-function generateBox(w, h, d){
+function generateBox(w, h, d) {
     const geometry = new THREE.BoxGeometry(w, h, d)
     const material = new THREE.MeshPhongMaterial({
         color: "rgb(20, 20, 20)",
@@ -86,19 +97,38 @@ function generateBox(w, h, d){
     return mesh
 }
 
-function genaretePointLight(color, intensity){
+function generateSphere(radius, hoeensegmente, breitensegmente, texture) {
+
+    const loader = new THREE.TextureLoader()
+
+    const sphereGeometry = new THREE.SphereGeometry(radius, hoeensegmente, breitensegmente)
+    const sphereTexture = loader.load(texture)
+    const sphereMaterial = new THREE.MeshLambertMaterial({
+        map: sphereTexture
+    })
+    const sphereMash = new THREE.Mesh(sphereGeometry, sphereMaterial)
+    return sphereMash
+}
+
+function genaretePointLight(color, intensity) {
     const ligtht = new THREE.PointLight(color, intensity)
     ligtht.castShadow = true
     return ligtht
 }
 
-function update(renderer, scene, camera, controls){
+function genareteAmbientLight(color, intensity) {
+    const ligtht = new THREE.AmbientLight(color, intensity)
+    ligtht.castShadow = true
+    return ligtht
+}
+
+function update(renderer, scene, camera, controls) {
     renderer.render(scene, camera)
 
     const floor = scene.getObjectByName("floor")
     floor.rotation.x += 0.002
 
-    scene.traverse(function(child){
+    scene.traverse(function (child) {
         const box = child.getObjectByName("box")
         // box.rotation.y -= 0.2
     })
@@ -108,20 +138,25 @@ function update(renderer, scene, camera, controls){
     const speed = 10
     const step = speed * clock.getDelta()
     const box = scene.getObjectByName("box")
-    if(keyboard.pressed("D")){
+    const sphere = scene.getObjectByName("sphere")
+    if (keyboard.pressed("D")) {
         box.translateX(step)
     }
-    if(keyboard.pressed("A")){
+    if (keyboard.pressed("A")) {
         box.translateX(-step)
     }
-    if(keyboard.pressed("W")){
+    if (keyboard.pressed("W")) {
         box.translateY(step)
     }
-    if(keyboard.pressed("S")){
+    if (keyboard.pressed("S")) {
         box.translateY(-step)
     }
+    if (keyboard.pressed(" ")) {
+        sphere.rotation.y += step / 2
+        sphere.rotation.z += step / 4
+    }
 
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
         update(renderer, scene, camera, controls)
     })
 }
