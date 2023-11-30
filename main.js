@@ -1,5 +1,7 @@
 "use strict";
 
+const keyboard	= new THREEx.KeyboardState()
+
 function main(){
     const scene = new THREE.Scene()
 
@@ -22,7 +24,7 @@ function main(){
 
     scene.add(floor)
     scene.add(pointLight)
-    loadScene(scene)
+    // loadScene(scene)
 
     const camera = new THREE.PerspectiveCamera(
         45,
@@ -101,6 +103,20 @@ function update(renderer, scene, camera, controls){
     })
 
     controls.update()
+
+    const box = scene.getObjectByName("box")
+    if(keyboard.pressed("D")){
+        box.translateX(0.2)
+    }
+    if(keyboard.pressed("A")){
+        box.translateX(-0.2)
+    }
+    if(keyboard.pressed("W")){
+        box.translateY(0.2)
+    }
+    if(keyboard.pressed("S")){
+        box.translateY(-0.2)
+    }
 
     requestAnimationFrame(function() {
         update(renderer, scene, camera, controls)
