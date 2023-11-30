@@ -2,6 +2,9 @@
 
 function main(){
     const scene = new THREE.Scene()
+
+    const gui = new dat.GUI()
+
     const box = generateBox(1, 1, 1)
     box.name = "box"
     box.position.y = box.geometry.parameters.height / 2 
@@ -14,6 +17,8 @@ function main(){
     const pointLight = genaretePointLight(0xffffff, 1)
     pointLight.name = "pointLight"
     pointLight.position.y = 5
+
+    gui.add(pointLight, "intensity", 0, 20)
 
     scene.add(floor)
     scene.add(pointLight)
