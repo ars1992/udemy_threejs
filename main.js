@@ -19,8 +19,6 @@ function main(){
     scene.add(pointLight)
     loadScene(scene)
 
-    
-
     const camera = new THREE.PerspectiveCamera(
         45,
         window.innerWidth / window.innerHeight,
@@ -38,7 +36,10 @@ function main(){
     renderer.setClearColor("rgb(60, 60, 60)")
 
     document.querySelector(".webgl").appendChild(renderer.domElement)
-    update(renderer, scene, camera)
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+    update(renderer, scene, camera, controls)
     return scene
 }
 
@@ -83,7 +84,7 @@ function genaretePointLight(color, intensity){
     return ligtht
 }
 
-function update(renderer, scene, camera){
+function update(renderer, scene, camera, controls){
     renderer.render(scene, camera)
 
     const floor = scene.getObjectByName("floor")
@@ -94,8 +95,10 @@ function update(renderer, scene, camera){
         // box.rotation.y -= 0.2
     })
 
+    controls.update()
+
     requestAnimationFrame(function() {
-        update(renderer, scene, camera)
+        update(renderer, scene, camera, controls)
     })
 }
 
