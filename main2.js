@@ -106,23 +106,18 @@ function update(renderer, scene, camera, controls) {
     if (keyboard.pressed("D")) {
         wolf.rotation.y = 0
         wolf.translateX(step)
-        camera.translateX(step)
     }
     if (keyboard.pressed("A")) {
         wolf.rotation.y = 0
         wolf.translateX(-step)
-        camera.translateX(-step)
     }
     if (keyboard.pressed("W")) {
         wolf.rotation.y = 0
         wolf.translateZ(step)
-        camera.translateZ(step)
     }
     if (keyboard.pressed("S")) {
         wolf.rotation.y = Math.PI
         wolf.translateZ(step)
-        camera.position.z -= step
-        camera.lookAt(wolf.position)
     }
 
 
