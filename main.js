@@ -25,7 +25,7 @@ function main() {
     pointLight.name = "pointLight"
     pointLight.position.y = 5
 
-    const ambientLight = genareteAmbientLight("rgb(222, 0, 0)", 4)
+    const ambientLight = genareteAmbientLight("rgb(222, 222, 0)", 4)
     ambientLight.name = "ambientLight"
     sphere.add(ambientLight)
 

@@ -1,3 +1,4 @@
+
 function init(){
     const scene = new THREE.Scene();
 
@@ -33,6 +34,39 @@ function init(){
     camera.position.y = 5
     camera.position.z = 5
     camera.lookAt(new THREE.Vector3(0, 0, -5))
+
+    const objloader = new THREE.OBJLoader()
+    const textureloader = new THREE.TextureLoader()
+    objloader.load("img/wolf_model/Wolf_obj.obj", function(object){
+        const body = textureloader.load("img/wolf_model/textures/Wolf_Body.jpg")
+        const fur = textureloader.load("img/wolf_model/textures/Wolf_Fur.jpg")
+
+        const bodyMat = new THREE.MeshStandardMaterial({color: "rgb(255, 255, 255)"})
+        const furMat = new THREE.MeshStandardMaterial({color: "rgb(255, 255, 255)"})
+
+        object.traverse(function(child){
+            if(child.name === 'Wolf_obj_body_Cube.001'){
+                child.material = bodyMat
+                bodyMat.roughness = 1
+                bodyMat.map = body
+                bodyMat.metalness = 0
+            }
+
+            if(child.name === 'Wolf_obj_fur_Cube.002'){
+                child.material = furMat
+                furMat.roughness = 1
+                furMat.map = fur
+                furMat.metalness = 0
+            }
+        })
+
+
+        object.scale.x = 4
+        object.scale.y = 4
+        object.scale.z = 4
+
+        scene.add(object)
+    })
 
     const renderer = new THREE.WebGLRenderer()
     renderer.shadowMap.enabled = true
