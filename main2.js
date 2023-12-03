@@ -86,6 +86,7 @@ function init() {
         particleSystem.vertices.push(particle)
     }
     const particles = new THREE.Points(particleSystem, particleMat)
+    particles.name = "particles"
     scene.add(particles)
 
     const renderer = new THREE.WebGLRenderer()
@@ -115,6 +116,25 @@ function update(renderer, scene, camera, controls) {
     renderer.render(scene, camera)
 
     controls.update()
+
+    const particles = scene.getObjectByName("particles")
+    particles.geometry.vertices.forEach(function(p) {
+        p.x -= Math.random() * 0.11 * 2
+        p.y -= Math.random() * 0.02 * 2
+        p.z += Math.random() * 0.05 * 2
+
+        if(p.x < -100){
+            p.x += 100
+        }
+        if(p.y < -100){
+            p.y += 100
+        }
+        if(p.z > 100){
+            p.z += 100
+        }
+    })
+
+    particles.geometry.verticesNeedUpdate = true
 
     const speed = 10
     const step = speed * clock.getDelta()
