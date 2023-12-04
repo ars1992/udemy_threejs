@@ -1,10 +1,15 @@
+import * as THREE from './build/three.module.js';
+import { OrbitControls } from './lib/jsm/controls/OrbitControls.js';
+// import { CannonPhysics } from './lib/jsm/physics/CannonPhysics.js';
+import { OBJLoader } from './lib/jsm/loaders/OBJLoader.js';
+
 const keyboard = new THREEx.KeyboardState()
 const clock = new THREE.Clock()
 
 function init() {
     const scene = new THREE.Scene();
 
-    const leftLight = genareteSpotLight("rgb(255, 200, 200)", 0.5)
+    const leftLight = genareteSpotLight("rgb(255, 200, 200)", 10.5)
     leftLight.name = "leftLight"
 
     const rightLight = genareteSpotLight("rgb(255, 200, 200)", 1.5)
@@ -37,7 +42,7 @@ function init() {
     camera.position.z = 5
     camera.lookAt(new THREE.Vector3(0, 0, -5))
 
-    const objloader = new THREE.OBJLoader()
+    const objloader = new OBJLoader()
     const textureloader = new THREE.TextureLoader()
     objloader.load("img/wolf_model/Wolf_obj.obj", function (object) {
         const body = textureloader.load("img/wolf_model/textures/Wolf_Body.jpg")
@@ -70,7 +75,7 @@ function init() {
         scene.add(object)
     })
 
-    const particleSystem = new THREE.Geometry()
+    const particleSystem = new THREE.BufferGeometry()
     const particleMat = new THREE.PointsMaterial({
         color: "rgb(255, 255, 255)",
         size: 0.5,
@@ -81,10 +86,17 @@ function init() {
     })
 
     const particelAmount = 50_000
+    const particlePositions = new Float32Array(particelAmount * 3)
+
     for (let i = 0; i < particelAmount; i++) {
-        const particle = new THREE.Vector3(Math.random() * 200 - 100, Math.random() * 200 - 100, Math.random() * 200 - 100)
-        particleSystem.vertices.push(particle)
+        const i3 = i * 3
+        particlePositions[i3] = Math.random() * 200 - 100
+        particlePositions[i3 + 1] = Math.random() * 200 - 100
+        particlePositions[i3 + 2] = Math.random() * 200 - 100
     }
+
+    particleSystem.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3))
+
     const particles = new THREE.Points(particleSystem, particleMat)
     particles.name = "particles"
     scene.add(particles)
@@ -96,7 +108,7 @@ function init() {
 
     document.querySelector(".webgl").appendChild(renderer.domElement)
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement)
+    const controls = new OrbitControls(camera, renderer.domElement)
 
     update(renderer, scene, camera, controls)
     return scene
@@ -116,25 +128,27 @@ function update(renderer, scene, camera, controls) {
     renderer.render(scene, camera)
 
     controls.update()
+    const particles = scene.getObjectByName('particles')
 
-    const particles = scene.getObjectByName("particles")
-    particles.geometry.vertices.forEach(function(p) {
-        p.x -= Math.random() * 0.11 * 2
-        p.y -= Math.random() * 0.02 * 2
-        p.z += Math.random() * 0.05 * 2
+    for(let i = 0; i < particles.geometry.attributes.position.count * 3; i++){
+        particles.geometry.attributes.position.array[i * 3] -= Math.random() * 0.05  //x
+        particles.geometry.attributes.position.array[i * 3 + 1] -= Math.random() * 0.08 * 2 //y hoch runter
+        particles.geometry.attributes.position.array[i * 3 + 2] -= Math.random() * 0.1  //z
 
-        if(p.x < -100){
-            p.x += 100
+        if(particles.geometry.attributes.position.array[i * 3] < -100){
+            particles.geometry.attributes.position.array[i * 3] = 100
         }
-        if(p.y < -100){
-            p.y += 100
+        if(particles.geometry.attributes.position.array[i * 3 + 1] < -100){
+            particles.geometry.attributes.position.array[i * 3 + 1] = 100
         }
-        if(p.z > 100){
-            p.z += 100
+        if(particles.geometry.attributes.position.array[i * 3 + 2] < -100){
+            particles.geometry.attributes.position.array[i * 3 + 2] = 100
         }
-    })
+    }
 
-    particles.geometry.verticesNeedUpdate = true
+    
+    particles.geometry.attributes.position.needsUpdate = true;
+
 
     const speed = 10
     const step = speed * clock.getDelta()
@@ -163,4 +177,6 @@ function update(renderer, scene, camera, controls) {
     })
 }
 
-console.log(init())
+const scene = init()
+console.log(scene)
+console.log(scene.getObjectByName('particles'))
